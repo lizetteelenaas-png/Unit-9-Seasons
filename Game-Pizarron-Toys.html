@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📖 Unit 6 Toys </title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Comic Sans MS", cursive;
+    background: linear-gradient(to bottom, #e3f2f1, #fffdf5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .book {
+    width: 95%;
+    max-width: 1000px;
+    height: 90vh;
+    background: #faf9f4;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .left-page, .right-page {
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .left-page {
+    background: linear-gradient(to left, #ffffff, #f2ede4);
+    border-right: 1px solid #d3c6a5;
+  }
+
+  .right-page {
+    background: linear-gradient(to right, #ffffff, #f2ede4);
+  }
+
+  h2 {
+    margin-top: 10px;
+    color: #4a4a4a;
+    font-size: 1.8em;
+  }
+
+  .emotion-img {
+    width: 80%;
+    max-width: 220px;
+    height: auto;
+    border-radius: 15%;
+    border: 5px solid #97c1a9;
+    background: #fff;
+    object-fit: contain;
+    box-shadow: 0 0 10px rgba(150,200,180,0.5);
+    margin-bottom: 10px;
+  }
+
+  canvas {
+    border: 3px dashed #a4d4c1;
+    border-radius: 15px;
+    background: white;
+    cursor: crosshair;
+    width: 100%;
+    flex-grow: 1;
+    touch-action: none;
+  }
+
+  .instructions {
+    font-size: 1em;
+    color: #444;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  button {
+    font-size: 0.9em;
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: #b2dfdb;
+    color: #2c3e50;
+    transition: transform 0.2s, background 0.3s;
+  }
+
+  button:hover {
+    background: #9dd1c8;
+    transform: scale(1.05);
+  }
+
+  input[type="color"] {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .message {
+    font-size: 1em;
+    color: #3a7d44;
+    margin-top: 8px;
+    min-height: 24px;
+    text-align: center;
+  }
+
+  .cover {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #a7d7c5, #f6f5ec);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 10;
+  }
+
+  .cover h1 {
+    font-size: 2.3em;
+    color: #2c3e50;
+  }
+
+  .cover button {
+    margin-top: 25px;
+    font-size: 1.3em;
+    background: #97c1a9;
+    color: white;
+    border-radius: 20px;
+    padding: 15px 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  .cover button:hover { background: #88b69c; }
+
+  .final-page {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, #f9faf7, #e4f3ec);
+    text-align: center;
+    padding: 30px;
+    border-radius: 15px;
+    overflow-y: auto;
+    animation: fadeIn 1.5s ease-in-out;
+    z-index: 9;
+  }
+
+  .final-page h2 { color: #3a7d44; }
+
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .gallery img {
+    width: 120px;
+    height: 120px;
+    border: 3px solid #97c1a9;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(167,215,197,0.7);
+  }
+  .cover-teddy, .final-teddy {
+  width: 250px;
+  height: auto;
+  margin: 15px auto;
+  display: block;
+}
+  .word-audio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.play-button {
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .play-again {
+    margin-top: 20px;
+    background: #a4d4c1;
+    color: white;
+    font-size: 1.1em;
+    padding: 10px 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  .play-again:hover { background: #8cc3ae; transform: scale(1.05); }
+
+  /* RESPONSIVE PARA TELÉFONOS */
+  @media (max-width: 768px) {
+    .book { flex-direction: column; height: 95vh; }
+    .left-page, .right-page { width: 100%; padding: 10px; }
+    .left-page { border-right: none; border-bottom: 1px solid #d3c6a5; margin-bottom: 10px; }
+    .emotion-img { max-width: 120px; margin-bottom: 8px; }
+    canvas { max-width: 100%; height: 35vh; }
+    .controls button, .controls input[type="color"] { font-size: 0.8em; padding: 5px 8px; }
+    h2 { font-size: 1.5em; }
+    .instructions { font-size: 0.9em; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="book" id="book">
+  <div class="cover" id="cover">
+    <h1>📖 Unit 6 Toys </h1>
+    <p style="color:#2c3e50;">Click to start your creative journey 🎨✨</p>
+    <button onclick="openBook()">Start Game</button>
+    <img src="osito.png" alt="teddy bear" class="cover-teddy">
+  </div>
+
+  <div class="left-page">
+     <img id="emotionImage" class="emotion-img" src="happy.png" alt="emotion">
+    <div id="wordAudio" class="word-audio"></div>
+
+  </div>
+
+  <div class="right-page">
+    <div class="instructions" id="instructions">
+      ✏️ Draw how you feel when you are <b>happy</b>. Use any colors you like!
+    </div>
+
+    <canvas id="drawArea" width="350" height="300"></canvas>
+
+    <div class="controls">
+      <input type="color" id="colorPicker" value="#000000">
+      <button onclick="clearCanvas()">🧽 Delete</button>
+      <button onclick="saveDrawing()">💾 Save</button>
+      <button onclick="nextPage()">Next ➡️</button>
+    </div>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <div class="final-page" id="finalPage" style="display:none;">
+    <h2>🎉 Your book of imagination!</h2>
+    <p id="finalMessage" style="color:#2c3e50; font-size:1.2em; margin-bottom:15px;"></p>
+    <div class="gallery" id="gallery"></div>
+    <button class="play-again" onclick="restartBook()">🔄 Play Again</button>
+    <img src="osito.png" alt="teddy bear" class="final-teddy">
+  </div>
+</div>
+
+<script>
+const emotions = [
+  { name: "doll", img: "doll2.jpg", text: "Click and draw a doll. 💛", audio: "doll.mp3" },
+  { name: "bear", img: "bear2.jpg", text: "Click and draw a bear. 💙",  audio: "bear.mp3" },
+  { name: "blue", img: "blue2.jpg", text: "Click and draw a blue. ❤️",  audio: "blue.mp3" },
+  { name: "brown", img: "brown2.jpg", text: "Click and draw a brown. 💜",  audio: "brown.mp3" },
+  { name: "car", img: "car2.jpg", text: "Click and draw a car. 💚",  audio: "car.mp3" },
+  { name: "ball", img: "ball2.jpg", text: "Click and draw a ball. 💙",  audio: "ball.mp3" },
+  { name: "small", img: "small2.jpg", text: "Click and draw a small. 💛",  audio: "small.mp3" },
+  { name: "big", img: "big2.jpg", text: "Click and draw a big. 💙",  audio: "big.mp3" },
+  { name: "top", img: "top2.jpg", text: "Click and draw a top. 💚",  audio: "top.mp3" },
+  { name: "yo-yo", img: "yoyo2.jpg", text: "Click and draw a yo-yo. ❤️",  audio: "yo-yo.mp3" }
+];
+
+  function playAudio(src) {
+  const audio = new Audio(src);
+  audio.play();
+}
+
+let current = 0;
+let drawings = new Array(emotions.length).fill(null);
+const cover = document.getElementById("cover");
+const emotionName = document.getElementById("emotionName");
+const emotionImage = document.getElementById("emotionImage");
+const instructions = document.getElementById("instructions");
+const canvas = document.getElementById("drawArea");
+const ctx = canvas.getContext("2d");
+const colorPicker = document.getElementById("colorPicker");
+const message = document.getElementById("message");
+const finalPage = document.getElementById("finalPage");
+const gallery = document.getElementById("gallery");
+const finalMessage = document.getElementById("finalMessage");
+let drawing = false;
+
+function openBook() { 
+    cover.style.display = "none";              
+  document.getElementById("book").classList.add("open"); 
+  current = 0;                        
+  showPage();    
+}
+
+function showPage() {
+  const e = emotions[current];
+  emotionImage.src = e.img;
+  instructions.innerHTML = `✏️ ${e.text}`;
+
+  const container = document.getElementById('wordAudio');
+  container.textContent = '';
+
+  const nameSpan = document.createElement('span');
+  nameSpan.textContent = e.name;
+
+  const btn = document.createElement('button');
+  btn.className = 'play-button';
+  btn.textContent = '🔊';
+
+  if (e.audio) {
+    btn.addEventListener('click', () => playAudio(e.audio));
+  }
+
+  container.appendChild(nameSpan);
+  container.appendChild(btn);
+
+  if (drawings[current]) {
+    const img = new Image();
+    img.src = drawings[current];
+    img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  } else {
+    clearCanvas();
+  }
+
+  message.textContent = "";
+}
+
+
+function nextPage() { 
+  if(current < emotions.length-1){
+    current++;
+    showPage();
+  } else {
+    showFinalPage();
+  }
+}
+
+function clearCanvas() { ctx.clearRect(0,0,canvas.width,canvas.height); }
+
+function saveDrawing() {
+  const blank = document.createElement("canvas");
+  blank.width = canvas.width;
+  blank.height = canvas.height;
+  if(canvas.toDataURL() === blank.toDataURL()) {
+    message.style.color = "red";
+    message.textContent = "⚠️ Draw something first before saving!";
+    return;
+  }
+  drawings[current] = canvas.toDataURL("image/png");
+  const praises = ["🌟 Excellent work!","🎉 Great job!","💖 So creative!","😊 Beautiful drawing!","👏 Keep it up!"];
+  message.style.color = "#3a7d44";
+  message.textContent = praises[Math.floor(Math.random()*praises.length)];
+}
+
+function showFinalPage() {
+  finalPage.style.display = "block";
+  gallery.innerHTML = "";
+  drawings.forEach((img,i)=>{
+    if(img){
+      const image=document.createElement("img");
+      image.src=img;
+      image.alt=emotions[i].name;
+      gallery.appendChild(image);
+    }
+  });
+  const compliments = ["🌈 Your thoughts shine through in every drawing!","💫 What a wonderful artist you are!🌻 Your drawings look beautiful!🐰 Your book is full of magic!💕 Amazing work, little artist!"];
+  finalMessage.textContent = compliments[Math.floor(Math.random()*compliments.length)];
+}
+
+function restartBook() {
+  finalPage.style.display="none"; 
+  cover.style.display="flex"; 
+  drawings = new Array(emotions.length).fill(null); 
+  current=0; 
+  showPage(); 
+}
+
+canvas.addEventListener("mousedown",()=>drawing=true);
+canvas.addEventListener("mouseup",()=>{drawing=false; ctx.lastX=null; ctx.lastY=null;});
+canvas.addEventListener("mouseout",()=>{drawing=false; ctx.lastX=null; ctx.lastY=null;});
+canvas.addEventListener("mousemove",draw);
+
+canvas.addEventListener("touchstart",(e)=>{drawing=true;draw(e.touches[0]);});
+canvas.addEventListener("touchmove",(e)=>{if(drawing){draw(e.touches[0]);} e.preventDefault();});
+canvas.addEventListener("touchend",()=>{drawing=false; ctx.lastX=null; ctx.lastY=null;});
+
+function draw(e){
+  if(!drawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  ctx.strokeStyle = colorPicker.value;
+  ctx.lineWidth = 4;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  if(!ctx.lastX){ ctx.lastX=x; ctx.lastY=y; }
+  ctx.beginPath();
+  ctx.moveTo(ctx.lastX,ctx.lastY);
+  ctx.lineTo(x,y);
+  ctx.stroke();
+  ctx.lastX = x;
+  ctx.lastY = y;
+}
+
+// Centrar conejo en PC
+const emotionContainer = document.querySelector('.left-page');
+function centerEmotionImage() {
+  if(window.innerWidth > 768) {
+    emotionContainer.style.justifyContent = "center";
+  } else {
+    emotionContainer.style.justifyContent = "flex-start";
+  }
+}
+window.addEventListener("resize", centerEmotionImage);
+window.addEventListener("load", () => { showPage(); centerEmotionImage(); });
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

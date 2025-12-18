@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title> 🃏 Unit 6 Toys </title>
+<style>
+  :root {
+    --accent: #0077b6;
+    --bg: url('PaisajeF.jpg') no-repeat center center fixed;
+  }
+  body {
+    margin: 0;
+    font-family: "Comic Sans MS", cursive;
+    background: var(--bg);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-height: 100vh;
+    padding: 18px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  .cover, .final {
+    width: 100%;
+    max-width: 900px;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    text-align: center;
+    background: linear-gradient(135deg,#caf0f8,#fde4cf);
+  }
+  h1 { color: var(--accent); margin: 0; }
+  .game {
+    width: 100%;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-gap: 12px;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .card {
+    width: 120px;
+    height: 140px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 700;
+    color: #000;
+    font-size: 20px;
+    text-align: center;
+  }
+  .card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    background: white;
+  }
+  .card.flipped {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  }
+  .card.matched {
+    background: #caf0f8;
+    cursor: default;
+  }
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    animation: hintPulse 3s infinite;
+  }
+  .cover-teddy {
+  display: block;
+  margin: 20px auto 0 auto; /* espacio arriba y centrado */
+  width: 250px;
+}
+
+.final-teddy {
+  width: 250px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+  #finalMessage {
+    font-size: 32px;
+    font-weight: 700;
+    color: green;
+    margin-top: 12px;
+    text-align: center;
+  }
+  @keyframes hintPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+    50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,255,0,0.6); }
+  }
+
+  /* 📱 Ajuste especial para teléfonos en vertical */
+  @media (max-width: 600px) {
+    .game {
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 6px;
+    }
+    .card {
+      width: 80px;
+      height: 90px;
+      font-size: 14px;
+    }
+    .card img {
+      width: 55px;
+      height: 55px;
+    }
+    h1 { font-size: 22px; }
+    p { font-size: 18px; }
+    .btn { font-size: 18px; padding: 12px 18px; }
+  }
+
+  /* Extra pequeño (pantallas muy chicas, <400px) */
+  @media (max-width: 400px) {
+    .game {
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 4px;
+    }
+    .card {
+      width: 70px;
+      height: 80px;
+      font-size: 12px;
+    }
+    .card img {
+      width: 45px;
+      height: 45px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover" id="cover">
+  <h1> 🃏 Unit 6 Toys </h1>
+  <p>Find all the matching pairs of images</p>
+  <p><strong>If you need help, press the hint button 💡</strong></p>
+  <button class="btn" onclick="startGame()">Start Game</button>
+  <img src="osito.png" alt="teddy bear" class="cover-teddy">
+</div>
+
+<!-- Game -->
+<div id="game" style="display:none; text-align:center;">
+  <button class="btn" onclick="giveHint()">💡 Hint</button>
+  <div class="game" id="board" aria-label="Memory board"></div>
+  <div id="message" style="display:none;">
+    <div id="finalMessage"></div>
+    <button class="btn" onclick="startGame()">🔄 Play Again</button>
+  </div>
+</div>
+
+<script>
+const emotions = [
+  { name: "doll", img: "doll5.jpg" },
+  { name: "bear", img: "bear5.jpg" },
+  { name: "blue", img: "blue5.jpg" },
+  { name: "brown", img: "brown5.jpg" },
+  { name: "car", img: "car5.jpg" },
+  { name: "ball", img: "ball5.jpg" },
+  { name: "small", img: "small5.jpg" },
+  { name: "big", img: "big5.jpg" },
+  { name: "top", img: "top5.jpg" },
+  { name: "yo-yo", img: "yoyo5.jpg" }
+];
+
+let boardEl = document.getElementById('board');
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let matches = 0;
+let allCards = [];
+
+function startGame(){
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  document.getElementById('message').style.display = 'none';
+  boardEl.innerHTML = '';
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+  matches = 0;
+
+  let cards = [];
+  emotions.forEach(e => { cards.push({...e}); cards.push({...e}); });
+  shuffle(cards);
+
+  allCards = [];
+  cards.forEach((cardData, index)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.name = cardData.name;
+    card.dataset.img = cardData.img;
+    card.dataset.index = index;
+    card.innerHTML = '?';
+    card.addEventListener('click', flipCard);
+    boardEl.appendChild(card);
+    allCards.push(card);
+  });
+}
+
+function flipCard(){
+  if(lockBoard) return;
+  if(this.classList.contains('flipped') || this.classList.contains('matched')) return;
+
+  this.classList.add('flipped');
+  this.innerHTML = `<img src="${this.dataset.img}" alt="${this.dataset.name}"><div>${this.dataset.name}</div>`;
+
+  if(!firstCard){
+    firstCard = this;
+    return;
+  }
+  secondCard = this;
+  checkMatch();
+}
+
+function checkMatch(){
+  if(firstCard.dataset.name === secondCard.dataset.name){
+    firstCard.classList.add('matched');
+    secondCard.classList.add('matched');
+    firstCard = null;
+    secondCard = null;
+    matches++;
+    if(matches === emotions.length){
+      showFinalMessage();
+    }
+  } else {
+    lockBoard = true;
+    setTimeout(()=>{
+      firstCard.classList.remove('flipped');
+      secondCard.classList.remove('flipped');
+      firstCard.innerHTML = '?';
+      secondCard.innerHTML = '?';
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+    },1000);
+  }
+}
+
+function shuffle(array){
+  for(let i=array.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [array[i],array[j]]=[array[j],array[i]];
+  }
+}
+
+function giveHint(){
+  if(lockBoard) return;
+  const unflipped = allCards.filter(c => !c.classList.contains('flipped') && !c.classList.contains('matched'));
+  if(unflipped.length === 0) return;
+  const card = unflipped[Math.floor(Math.random()*unflipped.length)];
+  card.classList.add('flipped');
+  card.innerHTML = `<img src="${card.dataset.img}" alt="${card.dataset.name}"><div>${card.dataset.name}</div>`;
+  lockBoard = true;
+  setTimeout(()=>{
+    card.classList.remove('flipped');
+    card.innerHTML = '?';
+    lockBoard = false;
+  },1000);
+}
+
+function showFinalMessage(){
+  const msg = document.getElementById('message');
+  const finalText = document.getElementById('finalMessage');
+  finalText.textContent = '🎉 Congratulations! You completed the game!';
+  msg.style.display = 'block';
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

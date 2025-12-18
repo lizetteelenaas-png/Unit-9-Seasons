@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📘 Unit 6 Toys 🖍️</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Comic Sans MS", cursive;
+    background: url("PaisajeA.jpg") no-repeat center center/cover;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  /* Pantalla de inicio */
+  .start-screen, .end-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255,255,255,0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    text-align: center;
+  }
+
+  .start-screen h1 {
+    font-size: clamp(36px, 8vw, 64px);
+    color: #ff69b4;
+    text-shadow: 2px 2px #fff;
+    margin-bottom: 20px;
+  }
+
+  .start-screen p {
+    font-size: clamp(18px, 4vw, 26px);
+    margin-bottom: 20px;
+  }
+
+  .start-button, .restart-button {
+    background-color: #ffb6c1;
+    border: none;
+    color: white;
+    font-size: clamp(18px, 4vw, 28px);
+    padding: clamp(12px, 2vw, 20px) clamp(25px, 4vw, 50px);
+    border-radius: 40px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  .start-button:hover, .restart-button:hover {
+    transform: scale(1.1);
+    background-color: #ffa5b0;
+  }
+
+  /* Área de juego */
+  .game-area {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  /* Conejo principal - sin animación */
+  .bunny {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(120px, 15vw, 180px);
+    z-index: 3;
+  }
+
+  .instructions-line {
+    text-align: center;
+    background-color: #fff7ae;
+    border: 2px dashed #f8c537;
+    color: #6a0572;
+    font-size: clamp(20px,4vw,28px);
+    padding: clamp(12px,2vw,20px);
+    margin: 10px auto;
+    width: 70%;
+    border-radius: 15px;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+  }
+.feedback-line {
+    text-align: center;
+    background-color: #fffce1;
+    border: 2px dashed #f8c537;
+    color: #6a0572;
+    font-size: clamp(20px,4vw,28px);
+    padding: clamp(12px,2vw,20px);
+    margin: 10px auto;
+    width: 40%;
+    border-radius: 15px;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+}
+  
+  /* Zanahoria */
+.egg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: clamp(150px,20vw,170px);
+  height: clamp(120px,18vw,140px);
+  background-image: url("nube.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  font-size: clamp(14px,3vw,22px);
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  white-space: pre-line;
+  z-index: 5;
+}
+
+.egg-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+  .targets {
+    position: absolute;
+    top: 15%;
+    width: 100%;
+    text-align: center;
+    z-index: 4;
+  }
+
+  .dropzone {
+    display: inline-block;
+    width: clamp(70px, 14vw, 118px);
+    height: clamp(70px, 14vw, 118px);
+    border-radius: 12%;
+    border: 4px dashed #ccc;
+    margin: clamp(10px,2vw,15px);
+    background-color: #ffffffcc;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+  }
+  .play-button {
+  position: absolute;
+  bottom: 5px;   /* esquina inferior */
+  right: 5px;    /* esquina derecha */
+  background: rgba(255,255,255,0.8);
+  border: none;
+  border-radius: 50%;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+  .dropzone img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: white;
+  }
+
+  .dropzone.correct {
+    border-color: #7ae582;
+    background-color: #e3fcec;
+    animation: pop 0.5s ease;
+  }
+
+  @keyframes pop {0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);}}
+
+  .message {
+    text-align: center;
+    font-size: clamp(20px,5vw,30px);
+    color: #6a0572;
+    margin-top: 10px;
+  }
+
+  /* Ajuste responsivo para teléfonos */
+  @media (max-width: 600px) {
+    .egg {
+    width: 100px;
+    height: 100px;
+    font-size: 16px;
+    top: 50%;
+  }
+     .egg-container {
+    height: 160px;
+  }
+    .dropzone {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="start-screen" id="startScreen">
+  <h1> 📘 Unit 6 Toys 🖍️</h1>
+  <p>Help Ben the Bear learn about his face in English!</p>
+  <button class="start-button" onclick="startGame()">Start Game</button>
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<div class="instructions-line" id="instructionsLine">
+ 📘  Drag and Drop 🖍️
+</div>
+
+<div class="game-area" id="gameArea">
+  <img src="osito.png" class="bunny" id="bunny" alt="bunny">
+  <div class="egg" id="egg"></div>
+</div>
+
+<div class="targets" id="targetArea">
+  <div class="dropzone" data-match="doll"><img src="doll.jpg" alt="doll">
+      <button class="play-button" onclick="playAudio('dollAudio')">▶️</button>
+      <audio id="dollAudio" src="doll.mp3"></audio></div>
+  
+  <div class="dropzone" data-match="bear"><img src="bear.jpg" alt="bear">
+      <button class="play-button" onclick="playAudio('bearAudio')">▶️</button>
+    <audio id="bearAudio" src="bear.mp3"></audio></div>
+  
+  <div class="dropzone" data-match="blue"><img src="blue.jpg" alt="blue">
+      <button class="play-button" onclick="playAudio('blueAudio')">▶️</button>
+      <audio id="blueAudio" src="blue.mp3"></audio></div>
+  
+  <div class="dropzone" data-match="brown"><img src="brown.jpg" alt="brown">
+      <button class="play-button" onclick="playAudio('brownAudio')">▶️</button>
+      <audio id="brownAudio" src="brown.mp3"></audio></div>
+  
+  <div class="dropzone" data-match="car"><img src="car.jpg" alt="car">
+      <button class="play-button" onclick="playAudio('carAudio')">▶️</button>
+      <audio id="carAudio" src="car.mp3"></audio></div>
+  
+  <div class="dropzone" data-match="ball"><img src="ball.jpg" alt="ball">
+      <button class="play-button" onclick="playAudio('ballAudio')">▶️</button>
+      <audio id="ballAudio" src="ball.mp3"></audio></div>
+  
+  <div class="dropzone" data-match="small"><img src="small.jpg" alt="small">
+      <button class="play-button" onclick="playAudio('smallAudio')">▶️</button>
+      <audio id="smallAudio" src="small.mp3"></audio></div>
+  
+  <div class="dropzone" data-match="big"><img src="big.jpg" alt="big">
+      <button class="play-button" onclick="playAudio('bigAudio')">▶️</button>
+      <audio id="bigAudio" src="big.mp3"></audio></div>
+  
+  <div class="dropzone" data-match="top"><img src="top.jpg" alt="top">
+      <button class="play-button" onclick="playAudio('topAudio')">▶️</button>
+      <audio id="topAudio" src="top.mp3"></audio></div>
+  
+  <div class="dropzone" data-match="yo-yo"><img src="yoyo.jpg" alt="yo-yo">
+      <button class="play-button" onclick="playAudio('yo-yoAudio')">▶️</button>
+      <audio id="yo-yoAudio" src="yo-yo.mp3"></audio></div>
+</div>
+  
+  <div class="feedback-line" id="feedbackLine"></div>
+  <div class="message" id="message"></div>
+<div class="end-screen" id="endScreen" style="display:none;">
+  <h1>🎉 Great Job! 🎉</h1>
+  <p id="finalScore"></p>
+  <button class="restart-button" onclick="location.reload()">Play Again</button>
+</div>
+
+<script>
+let emotions=["doll","bear","blue","brown","car","ball","small","big","top","yo-yo"];
+const bunny=document.getElementById("bunny");
+const egg=document.getElementById("egg");
+const feedbackLine=document.getElementById("feedbackLine");
+const zones=document.querySelectorAll(".dropzone");
+const startScreen=document.getElementById("startScreen");
+const endScreen=document.getElementById("endScreen");
+const bgMusic=document.getElementById("bgMusic");
+
+let score=0;
+let current=0;
+let draggingWord="";
+
+function shuffleArray(array){return array.sort(()=>Math.random()-0.5);}
+
+function startGame(){
+  startScreen.style.display="none";
+  bgMusic.play();
+  emotions=shuffleArray(emotions);
+  startRound();
+}
+
+function startRound(){
+  if(current>=emotions.length){ showResult(); return; }
+  const emotion=emotions[current];
+  feedbackLine.textContent="";
+  egg.style.display="none";
+  setTimeout(()=>{ showEgg(emotion); },500);
+}
+
+function showEgg(emotion){
+  egg.style.display="flex";
+
+  // Posicionar a la derecha del conejo
+  const bunnyRect = bunny.getBoundingClientRect();
+  egg.style.left = (bunnyRect.right + 10) + "px";  // 10px a la derecha
+  egg.style.bottom = "0%";
+  egg.style.top = "auto";
+  egg.style.transform = "translateX(0) scale(1)";
+
+  egg.textContent = emotion;
+  egg.setAttribute("data-word",emotion);
+
+  const startLeft = egg.offsetLeft;
+  const startTop  = egg.offsetTop;
+
+  // Touch para móviles
+  egg.ontouchstart = function(e){
+    e.preventDefault();
+    draggingWord = emotion;
+    const startX = e.touches[0].clientX - egg.offsetLeft;
+    const startY = e.touches[0].clientY - egg.offsetTop;
+
+    const moveEgg = function(ev){
+      const touch = ev.touches[0];
+      egg.style.left = (touch.clientX - startX) + "px";
+      egg.style.top  = (touch.clientY - startY) + "px";
+    };
+
+    document.ontouchmove = moveEgg;
+
+    document.ontouchend = function(ev){
+      document.ontouchmove = null;
+      document.ontouchend = null;
+
+      let droppedOnZone = false;
+      zones.forEach(zone=>{
+        const rect = zone.getBoundingClientRect();
+        const eggRect = egg.getBoundingClientRect();
+        if(eggRect.left + eggRect.width/2 >= rect.left &&
+           eggRect.left + eggRect.width/2 <= rect.right &&
+           eggRect.top + eggRect.height/2 >= rect.top &&
+           eggRect.top + eggRect.height/2 <= rect.bottom){
+
+          droppedOnZone = true;
+
+          if(zone.dataset.match === draggingWord){
+            score++;
+            feedbackLine.textContent = `✅ Correct! (${score}/${emotions.length})`;
+            feedbackLine.style.color = "#00a86b";
+            zone.classList.add("correct");
+          } else {
+            feedbackLine.textContent = `❌ Oops! Try again next time.`;
+            feedbackLine.style.color = "#ff595e";
+          }
+         //document.getElementById("feedbackLine").textContent = feedbackLine.textContent;
+          egg.style.display = "none";
+          current++;
+          setTimeout(startRound,1000);
+        }
+      }); 
+
+      if(!droppedOnZone){
+        egg.style.left = startLeft + "px";
+        egg.style.top  = startTop + "px";
+      }
+    };
+  };
+
+  // Desktop drag & drop
+  egg.setAttribute("draggable",true);
+  egg.ondragstart=function(e){
+    draggingWord=emotion;
+    e.dataTransfer.setData("text",draggingWord);
+  };
+}
+
+zones.forEach(zone=>{
+  zone.addEventListener("dragover",e=> e.preventDefault());
+  zone.addEventListener("drop",e=>{
+    e.preventDefault();
+    const correctWord=zone.dataset.match;
+    if(draggingWord===correctWord){
+      score++;
+      feedbackLine.textContent=`✅ Correct! (${score}/${emotions.length})`;
+      feedbackLine.style.color="#00a86b";
+      zone.classList.add("correct");
+    } else {
+      feedbackLine.textContent=`❌ Oops! Try again next time.`;
+      feedbackLine.style.color="#ff595e";
+    }
+   //document.getElementById("feedbackLine").textContent = feedbackLine.textContent;
+    egg.style.display="none";
+    current++;
+    setTimeout(startRound,1000);
+  });
+});
+
+function showResult(){
+  document.getElementById("finalScore").textContent=`You got ${score}/${emotions.length} correct!`;
+  endScreen.style.display="flex";
+}
+  function playAudio(id) {
+  const audio = document.getElementById(id);
+  if (audio) {
+    audio.currentTime = 0; // reinicia si ya se estaba reproduciendo
+    audio.play();
+  }
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

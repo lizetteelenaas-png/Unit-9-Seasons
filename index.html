@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Unit 2 My Room </title>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      text-align: center;
+      background: linear-gradient(120deg, #ffe0e0, #e0f7ff);
+      line-height: 1.5;
+    }
+
+    /* Imagen del encabezado */
+    header {
+      width: 100%;
+      height: auto;
+    }
+
+    header img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain; 
+    }
+
+    /* Título debajo de la imagen */
+    h1 {
+      font-size: 20vw;
+      color: #ff4d6d;
+      text-shadow: 2px 2px #fff;
+      margin: 2vh 0 0vh;
+    }
+
+    /* Contenedor principal */
+    main {
+      padding: 5vw;
+      font-size: 5vw;
+    }
+
+    /* Botones */
+    a {
+      display: block;
+      background-color: #ffd966;
+      color: #333;
+      text-decoration: none;
+      font-size: 6vw;
+      margin: 3vh 0;
+      padding: 4vw 0;
+      border-radius: 15px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    a:hover {
+      transform: scale(1.05);
+      background-color: #ffeb99;
+    }
+
+    a span {
+      font-size: 1.5em;
+      margin-right: 10px;
+    }
+
+    /* Ajustes para celular */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 9vw;
+        margin: 2vh 0 3vh;
+      }
+      main {
+        font-size: 6vw;
+        padding: 6vw;
+      }
+      a {
+        font-size: 7vw;
+        padding: 5vw 0;
+      }
+    }
+
+    /* Ajustes para tablets */
+    @media (min-width: 481px) and (max-width: 1024px) {
+      h1 {
+        font-size: 7vw;
+      }
+      main {
+        font-size: 5.5vw;
+      }
+      a {
+        font-size: 6.5vw;
+        padding: 4.5vw 0;
+      }
+    }
+
+    /* Ajustes para pantallas grandes */
+    @media (min-width: 1025px) {
+      h1 {
+        font-size: 3vw;
+      }
+      main {
+        font-size: 1.5vw;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      a {
+        font-size: 2vw;
+        padding: 1.5vw 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="Header.png" alt="Portada Juegos de Emociones">
+  </header>
+
+  <h1>Unit 2 My Room </h1>
+
+  <main>
+    <a href="Game-Conejo-Room.html"><span>🧸</span> Help Ben the Bear </a>
+    <a href="Game-Pizarron-Room.html"><span>🧠</span>My Book of Imagination</a>
+    <a href="Game-Rompecabezas-Room.html"><span>🧩</span>Puzzle Game</a>
+    <a href="Game-Collage-Room.html"><span>🎨</span>Collage Game</a>
+    <a href="Game-Memorama-Room.html"><span>🃏</span>Memory Game</a>
+    <a href="pintarXnumero.html"><span>🎨</span>Paint the drawing</a>
+  </main>
+
+</body>
+</html>
