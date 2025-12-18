@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📘 Unit 6 Toys 🖍️</title>
+<title>📘 Unit 9 Seasons🖍️</title>
 <style>
   body {
     margin: 0;
@@ -210,8 +210,8 @@
 <body>
 
 <div class="start-screen" id="startScreen">
-  <h1> 📘 Unit 6 Toys 🖍️</h1>
-  <p>Help Ben the Bear learn about his face in English!</p>
+  <h1> 📘 Unit 9 Seasons 🖍️</h1>
+  <p>Help Ben the Bear learn about the seasons in English!</p>
   <button class="start-button" onclick="startGame()">Start Game</button>
   <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
@@ -228,45 +228,45 @@
 </div>
 
 <div class="targets" id="targetArea">
-  <div class="dropzone" data-match="doll"><img src="doll.jpg" alt="doll">
-      <button class="play-button" onclick="playAudio('dollAudio')">▶️</button>
-      <audio id="dollAudio" src="doll.mp3"></audio></div>
+  <div class="dropzone" data-match="cloudy"><img src="cloudy.jpg" alt="cloudy">
+      <button class="play-button" onclick="playAudio('cloudyAudio')">▶️</button>
+      <audio id="cloudyAudio" src="cloudy"></audio></div>
   
-  <div class="dropzone" data-match="bear"><img src="bear.jpg" alt="bear">
-      <button class="play-button" onclick="playAudio('bearAudio')">▶️</button>
-    <audio id="bearAudio" src="bear.mp3"></audio></div>
+  <div class="dropzone" data-match="rainy"><img src="rainy.jpg" alt="rainy">
+      <button class="play-button" onclick="playAudio('rainyAudio')">▶️</button>
+    <audio id="rainyAudio" src="rainy.mp3"></audio></div>
   
-  <div class="dropzone" data-match="blue"><img src="blue.jpg" alt="blue">
-      <button class="play-button" onclick="playAudio('blueAudio')">▶️</button>
-      <audio id="blueAudio" src="blue.mp3"></audio></div>
+  <div class="dropzone" data-match="sunny"><img src="sunny.jpg" alt="sunny">
+      <button class="play-button" onclick="playAudio('sunnyAudio')">▶️</button>
+      <audio id="sunnyAudio" src="sunny.mp3"></audio></div>
   
-  <div class="dropzone" data-match="brown"><img src="brown.jpg" alt="brown">
-      <button class="play-button" onclick="playAudio('brownAudio')">▶️</button>
-      <audio id="brownAudio" src="brown.mp3"></audio></div>
+  <div class="dropzone" data-match="windy"><img src="windy.jpg" alt="windy">
+      <button class="play-button" onclick="playAudio('windyAudio')">▶️</button>
+      <audio id="windyAudio" src="windy.mp3"></audio></div>
   
-  <div class="dropzone" data-match="car"><img src="car.jpg" alt="car">
-      <button class="play-button" onclick="playAudio('carAudio')">▶️</button>
-      <audio id="carAudio" src="car.mp3"></audio></div>
+  <div class="dropzone" data-match="cloud"><img src="cloud.jpg" alt="cloud">
+      <button class="play-button" onclick="playAudio('cloudAudio')">▶️</button>
+      <audio id="cloudAudio" src="cloud.mp3"></audio></div>
   
-  <div class="dropzone" data-match="ball"><img src="ball.jpg" alt="ball">
-      <button class="play-button" onclick="playAudio('ballAudio')">▶️</button>
-      <audio id="ballAudio" src="ball.mp3"></audio></div>
+  <div class="dropzone" data-match="sun"><img src="sun.jpg" alt="sun">
+      <button class="play-button" onclick="playAudio('sunAudio')">▶️</button>
+      <audio id="sunAudio" src="sun.mp3"></audio></div>
   
-  <div class="dropzone" data-match="small"><img src="small.jpg" alt="small">
-      <button class="play-button" onclick="playAudio('smallAudio')">▶️</button>
-      <audio id="smallAudio" src="small.mp3"></audio></div>
+  <div class="dropzone" data-match="rain"><img src="rain.jpg" alt="rain">
+      <button class="play-button" onclick="playAudio('rainAudio')">▶️</button>
+      <audio id="rainAudio" src="rain.mp3"></audio></div>
   
-  <div class="dropzone" data-match="big"><img src="big.jpg" alt="big">
-      <button class="play-button" onclick="playAudio('bigAudio')">▶️</button>
-      <audio id="bigAudio" src="big.mp3"></audio></div>
+  <div class="dropzone" data-match="unicorn"><img src="unicorn.jpg" alt="unicorn">
+      <button class="play-button" onclick="playAudio('unicornAudio')">▶️</button>
+      <audio id="unicornAudio" src="unicorn.mp3"></audio></div>
   
-  <div class="dropzone" data-match="top"><img src="top.jpg" alt="top">
-      <button class="play-button" onclick="playAudio('topAudio')">▶️</button>
-      <audio id="topAudio" src="top.mp3"></audio></div>
+  <div class="dropzone" data-match="umbrella"><img src="umbrella.jpg" alt="umbrella">
+      <button class="play-button" onclick="playAudio('umbrellaAudio')">▶️</button>
+      <audio id="umbrellaAudio" src="umbrella.mp3"></audio></div>
   
-  <div class="dropzone" data-match="yo-yo"><img src="yoyo.jpg" alt="yo-yo">
-      <button class="play-button" onclick="playAudio('yo-yoAudio')">▶️</button>
-      <audio id="yo-yoAudio" src="yo-yo.mp3"></audio></div>
+  <div class="dropzone" data-match="u"><img src="u.jpg" alt="u">
+      <button class="play-button" onclick="playAudio('uAudio')">▶️</button>
+      <audio id="uAudio" src="u.mp3"></audio></div>
 </div>
   
   <div class="feedback-line" id="feedbackLine"></div>
@@ -278,7 +278,7 @@
 </div>
 
 <script>
-let emotions=["doll","bear","blue","brown","car","ball","small","big","top","yo-yo"];
+let emotions=["cloudy","rainy","sunny","windy","cloud","sun","rain","unicorn","umbrella","u"];
 const bunny=document.getElementById("bunny");
 const egg=document.getElementById("egg");
 const feedbackLine=document.getElementById("feedbackLine");
@@ -420,6 +420,7 @@ function showResult(){
 </script>
 </body>
 </html>
+
 
 
 
